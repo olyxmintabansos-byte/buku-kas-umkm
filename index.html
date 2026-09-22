@@ -7,11 +7,11 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=2.5">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div id="dashboardApp">
-        <!-- LEFT SIDEBAR -->
+        <!-- LEFT SIDEBAR (Dark Navy/Slate for High Contrast) -->
         <aside id="sidebar">
             <div class="sidebar-header">
                 <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -48,16 +48,16 @@
 
         <!-- MAIN CONTENT -->
         <main id="mainContent">
-            <!-- Top Mobile Header -->
+            <!-- Top Header Bar -->
             <header class="top-header">
                 <div class="header-left">
                     <button id="mobileMenuBtn">☰</button>
-                    <h2 id="pageTitle">Dashboard</h2>
+                    <h2 id="pageTitle">Dashboard & Metrik</h2>
                 </div>
                 <div class="header-right">
                     <button id="quickTrxBtn" class="btn-primary">+ Catat Transaksi</button>
-                    <button id="darkModeToggleBtn" class="btn-icon">🌓</button>
-                    <button id="printBtn" class="btn-icon">🖨️</button>
+                    <button id="darkModeToggleBtn" class="btn-icon" title="Toggle Dark/Light Mode">🌓</button>
+                    <button id="printBtn" class="btn-icon" title="Cetak Ringkasan">🖨️</button>
                 </div>
             </header>
 
@@ -66,22 +66,22 @@
                 <!-- VIEW 1: DASHBOARD -->
                 <section id="viewDashboard" class="view-section active">
                     <div class="bento-grid">
-                        <div class="metric-card">
+                        <div class="metric-card card-accent-primary">
                             <span class="metric-label">Total Saldo Gabungan</span>
                             <h3 id="dashTotalBalance">Rp 0</h3>
                             <div class="pill-breakdown" id="dashWalletBreakdown">
-                                <span>Laci: 0</span> | <span>Bank: 0</span> | <span>QRIS: 0</span>
+                                <span>Laci: Rp 0</span> | <span>Bank: Rp 0</span> | <span>QRIS: Rp 0</span>
                             </div>
                         </div>
-                        <div class="metric-card">
+                        <div class="metric-card card-accent-income">
                             <span class="metric-label">Pemasukan Bulan Ini</span>
                             <h3 id="dashTotalIncome" class="text-income">Rp 0</h3>
                         </div>
-                        <div class="metric-card">
+                        <div class="metric-card card-accent-expense">
                             <span class="metric-label">Pengeluaran Bulan Ini</span>
                             <h3 id="dashTotalExpense" class="text-expense">Rp 0</h3>
                         </div>
-                        <div class="metric-card">
+                        <div class="metric-card card-accent-profit">
                             <span class="metric-label">Laba Bersih (Net Profit)</span>
                             <h3 id="dashNetProfit">Rp 0</h3>
                         </div>
@@ -116,7 +116,7 @@
                             <h3>5 Transaksi Terakhir</h3>
                             <button id="goToTrxBtn" class="btn-text">Buka Buku Lengkap &rarr;</button>
                         </div>
-                        <div class="table-responsive">
+                        <div class="table-responsive mt-3">
                             <table class="table">
                                 <thead><tr><th>Tanggal</th><th>Deskripsi</th><th>Nominal</th></tr></thead>
                                 <tbody id="recentTrxBody"></tbody>
@@ -128,32 +128,32 @@
                 <!-- VIEW 2: TRANSACTIONS -->
                 <section id="viewTransactions" class="view-section hidden">
                     <div class="card form-card">
-                        <h3>📝 Catat Mutasi Kas</h3>
+                        <h3>📝 Catat Mutasi Kas Baru</h3>
                         <div class="preset-buttons">
-                            <button class="preset-btn" data-preset="jual">+ Penjualan Harian</button>
-                            <button class="preset-btn" data-preset="stok">- Beli Stok/Bahan</button>
-                            <button class="preset-btn" data-preset="listrik">- Listrik/WiFi</button>
-                            <button class="preset-btn" data-preset="makan">- Makan/Operasional</button>
+                            <button type="button" class="preset-btn" data-preset="jual">+ Penjualan Harian</button>
+                            <button type="button" class="preset-btn" data-preset="stok">- Beli Stok/Bahan</button>
+                            <button type="button" class="preset-btn" data-preset="listrik">- Listrik/WiFi</button>
+                            <button type="button" class="preset-btn" data-preset="makan">- Makan/Operasional</button>
                         </div>
                         <form id="trxForm" class="mt-3">
                             <div class="form-grid">
                                 <div class="form-group">
-                                    <label>Tanggal</label>
+                                    <label for="trxDate">Tanggal</label>
                                     <input type="date" id="trxDate" required>
                                 </div>
                                 <div class="form-group">
-                                    <label>Jenis</label>
+                                    <label for="trxType">Jenis Transaksi</label>
                                     <select id="trxType">
                                         <option value="income">🟢 Pemasukan</option>
                                         <option value="expense">🔴 Pengeluaran</option>
                                     </select>
                                 </div>
                                 <div class="form-group full-col">
-                                    <label>Deskripsi Transaksi</label>
-                                    <input type="text" id="trxDesc" placeholder="Contoh: Penjualan Produk" required>
+                                    <label for="trxDesc">Deskripsi Transaksi</label>
+                                    <input type="text" id="trxDesc" placeholder="Contoh: Penjualan 20 Porsi Nasi Goreng" required>
                                 </div>
                                 <div class="form-group">
-                                    <label>Kategori</label>
+                                    <label for="trxCategory">Kategori</label>
                                     <select id="trxCategory">
                                         <option value="Penjualan">Penjualan</option>
                                         <option value="Bahan Baku">Bahan Baku</option>
@@ -164,7 +164,7 @@
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label>Dompet / Sumber Kas</label>
+                                    <label for="trxWallet">Dompet / Sumber Kas</label>
                                     <select id="trxWallet">
                                         <option value="cash">💵 Kas Tunai Laci</option>
                                         <option value="bank">🏦 Rekening Bank</option>
@@ -172,8 +172,8 @@
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label>Nominal Kotor (Rp)</label>
-                                    <input type="number" id="trxGrossAmount" min="1" required>
+                                    <label for="trxGrossAmount">Nominal Kotor (Rp)</label>
+                                    <input type="number" id="trxGrossAmount" min="1" placeholder="0" required>
                                 </div>
                                 <div class="form-group flex-center-col">
                                     <label class="checkbox-label">
@@ -183,7 +183,7 @@
                                     <input type="number" id="trxFeeAmount" placeholder="Nominal Potongan (Rp)" class="hidden mt-2">
                                 </div>
                                 <div class="form-group full-col">
-                                    <label>No WhatsApp Pelanggan (Opsional, untuk e-Nota)</label>
+                                    <label for="trxPhone">No WhatsApp Pelanggan (Opsional, untuk e-Nota)</label>
                                     <input type="text" id="trxPhone" placeholder="Contoh: 628123456789">
                                 </div>
                             </div>
@@ -195,7 +195,7 @@
                         <div class="flex-between flex-wrap gap-2">
                             <h3>📋 Riwayat Mutasi</h3>
                             <div class="filter-row">
-                                <input type="text" id="filterKeyword" placeholder="Cari...">
+                                <input type="text" id="filterKeyword" placeholder="Cari nama transaksi...">
                                 <select id="filterPeriod">
                                     <option value="all">Semua Waktu</option>
                                     <option value="today">Hari Ini</option>
@@ -206,6 +206,9 @@
                                     <option value="Penjualan">Penjualan</option>
                                     <option value="Bahan Baku">Bahan Baku</option>
                                     <option value="Operasional">Operasional</option>
+                                    <option value="Gaji">Gaji</option>
+                                    <option value="Sewa & Listrik">Sewa & Listrik</option>
+                                    <option value="Lainnya">Lainnya</option>
                                 </select>
                             </div>
                         </div>
@@ -224,11 +227,11 @@
                 <section id="viewDebts" class="view-section hidden">
                     <div class="debt-summary-banner">
                         <div class="banner-box box-piutang">
-                            <span>Total Piutang (Uang Masuk)</span>
+                            <span>Total Piutang (Uang Belum Masuk)</span>
                             <h3 id="totalPiutang">Rp 0</h3>
                         </div>
                         <div class="banner-box box-hutang">
-                            <span>Total Hutang (Uang Keluar)</span>
+                            <span>Total Hutang (Uang Belum Dibayar)</span>
                             <h3 id="totalHutang">Rp 0</h3>
                         </div>
                     </div>
@@ -237,31 +240,31 @@
                         <h3>Catat Hutang / Piutang Baru</h3>
                         <form id="debtForm" class="form-grid mt-3">
                             <div class="form-group">
-                                <label>Jenis</label>
+                                <label for="debtType">Jenis</label>
                                 <select id="debtType">
                                     <option value="piutang">Uang Saya di Orang (Piutang)</option>
                                     <option value="hutang">Saya Pinjam Uang (Hutang)</option>
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label>Nama Pihak / Kontak</label>
-                                <input type="text" id="debtName" required>
+                                <label for="debtName">Nama Pihak / Kontak</label>
+                                <input type="text" id="debtName" placeholder="Nama pelanggan/rekanan" required>
                             </div>
                             <div class="form-group">
-                                <label>No WhatsApp (awali 62)</label>
+                                <label for="debtPhone">No WhatsApp (awali 62)</label>
                                 <input type="text" id="debtPhone" placeholder="62812...">
                             </div>
                             <div class="form-group">
-                                <label>Nominal (Rp)</label>
-                                <input type="number" id="debtAmount" min="1" required>
+                                <label for="debtAmount">Nominal (Rp)</label>
+                                <input type="number" id="debtAmount" min="1" placeholder="0" required>
                             </div>
                             <div class="form-group">
-                                <label>Tanggal Jatuh Tempo</label>
+                                <label for="debtDueDate">Tanggal Jatuh Tempo</label>
                                 <input type="date" id="debtDueDate" required>
                             </div>
                             <div class="form-group">
-                                <label>Catatan</label>
-                                <input type="text" id="debtNotes">
+                                <label for="debtNotes">Catatan</label>
+                                <input type="text" id="debtNotes" placeholder="Keterangan transaksi">
                             </div>
                             <div class="form-group full-col">
                                 <button type="submit" class="btn-primary w-100">Simpan Catatan</button>
@@ -283,21 +286,21 @@
                 <!-- VIEW 4: WALLETS -->
                 <section id="viewWallets" class="view-section hidden">
                     <div class="wallet-grid">
-                        <div class="wallet-card">
+                        <div class="wallet-card card-accent-primary">
                             <div class="wallet-icon">💵</div>
                             <div class="wallet-info">
                                 <span>Kas Tunai Laci</span>
                                 <h3 id="balCash">Rp 0</h3>
                             </div>
                         </div>
-                        <div class="wallet-card">
+                        <div class="wallet-card card-accent-primary">
                             <div class="wallet-icon">🏦</div>
                             <div class="wallet-info">
                                 <span>Rekening Bank</span>
                                 <h3 id="balBank">Rp 0</h3>
                             </div>
                         </div>
-                        <div class="wallet-card">
+                        <div class="wallet-card card-accent-primary">
                             <div class="wallet-icon">📱</div>
                             <div class="wallet-info">
                                 <span>QRIS / E-Wallet</span>
@@ -310,7 +313,7 @@
                         <h3>Transfer Antar Dompet</h3>
                         <form id="transferForm" class="form-grid mt-3">
                             <div class="form-group">
-                                <label>Dari Dompet</label>
+                                <label for="transferFrom">Dari Dompet</label>
                                 <select id="transferFrom">
                                     <option value="cash">Kas Tunai Laci</option>
                                     <option value="bank">Rekening Bank</option>
@@ -318,7 +321,7 @@
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label>Ke Dompet</label>
+                                <label for="transferTo">Ke Dompet</label>
                                 <select id="transferTo">
                                     <option value="bank">Rekening Bank</option>
                                     <option value="cash">Kas Tunai Laci</option>
@@ -326,12 +329,12 @@
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label>Nominal Transfer (Rp)</label>
-                                <input type="number" id="transferAmount" min="1" required>
+                                <label for="transferAmount">Nominal Transfer (Rp)</label>
+                                <input type="number" id="transferAmount" min="1" placeholder="0" required>
                             </div>
                             <div class="form-group">
-                                <label>Catatan</label>
-                                <input type="text" id="transferNotes" placeholder="Misal: Setor tunai ke bank">
+                                <label for="transferNotes">Catatan</label>
+                                <input type="text" id="transferNotes" placeholder="Misal: Setor tunai ke rekening bank">
                             </div>
                             <div class="form-group full-col">
                                 <button type="submit" class="btn-primary w-100">Proses Pindah Dana</button>
@@ -346,8 +349,8 @@
                         <div class="card">
                             <h3>📅 Tagihan Rutin & Langganan</h3>
                             <form id="billForm" class="mt-3 form-row">
-                                <input type="text" id="billName" placeholder="Nama Tagihan" class="w-100 mb-2" required>
-                                <input type="number" id="billAmount" placeholder="Nominal" class="w-100 mb-2" required>
+                                <input type="text" id="billName" placeholder="Nama Tagihan (e.g. WiFi)" class="w-100 mb-2" required>
+                                <input type="number" id="billAmount" placeholder="Nominal (Rp)" class="w-100 mb-2" required>
                                 <select id="billPeriod" class="w-100 mb-2">
                                     <option value="bulanan">Bulanan</option>
                                     <option value="mingguan">Mingguan</option>
@@ -382,15 +385,15 @@
                         <h3>🎯 Target Tabungan (Piggy Banks)</h3>
                         <form id="goalForm" class="form-grid mt-3">
                             <div class="form-group">
-                                <label>Nama Tujuan Tabungan</label>
-                                <input type="text" id="goalName" required placeholder="Misal: Beli Mesin Kopi">
+                                <label for="goalName">Nama Tujuan Tabungan</label>
+                                <input type="text" id="goalName" required placeholder="Misal: Beli Mesin Kopi Baru">
                             </div>
                             <div class="form-group">
-                                <label>Target Nominal (Rp)</label>
-                                <input type="number" id="goalTarget" min="1" required>
+                                <label for="goalTarget">Target Nominal (Rp)</label>
+                                <input type="number" id="goalTarget" min="1" placeholder="0" required>
                             </div>
                             <div class="form-group">
-                                <label>Target Tercapai (Tgl)</label>
+                                <label for="goalDate">Target Tercapai (Tgl)</label>
                                 <input type="date" id="goalDate" required>
                             </div>
                             <div class="form-group flex-end">
@@ -450,19 +453,19 @@
                         <h3>🎨 Kustomisasi Sistem & Database</h3>
                         <div class="form-grid mt-4">
                             <div class="form-group">
-                                <label>Nama Bisnis</label>
+                                <label for="setBrandName">Nama Bisnis</label>
                                 <input type="text" id="setBrandName">
                             </div>
                             <div class="form-group">
-                                <label>Tagline</label>
+                                <label for="setTagline">Tagline</label>
                                 <input type="text" id="setTagline">
                             </div>
                             <div class="form-group">
-                                <label>Warna Tema Utama</label>
+                                <label for="setColor">Warna Tema Utama</label>
                                 <input type="color" id="setColor" class="w-100">
                             </div>
                             <div class="form-group">
-                                <label>Radius Sudut Kartu (px)</label>
+                                <label for="setRadius">Radius Sudut Kartu (px)</label>
                                 <input type="range" id="setRadius" min="0" max="24">
                             </div>
                             <div class="form-group">
@@ -470,7 +473,7 @@
                                 <label class="checkbox-label"><input type="checkbox" id="setDarkMode"> Aktifkan Dark Mode</label>
                             </div>
                             <div class="form-group">
-                                <label>Pajak UMKM (%)</label>
+                                <label for="setTax">Pajak UMKM (%)</label>
                                 <input type="number" step="0.1" id="setTax" value="0.5">
                             </div>
                         </div>
@@ -490,7 +493,23 @@
         </main>
     </div>
 
-    <!-- GLOBAL MODALS -->
+    <!-- GLOBAL TOAST NOTIFICATION CONTAINER -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <!-- GLOBAL POPUPS & MODALS -->
+
+    <!-- Confirmation Modal (Replacing native confirm()) -->
+    <div id="confirmModal" class="modal hidden">
+        <div class="confirm-dialog-card">
+            <div class="confirm-icon-bubble">⚠️</div>
+            <h3 id="confirmModalTitle">Konfirmasi Tindakan</h3>
+            <p id="confirmModalDesc">Apakah Anda yakin ingin melanjutkan tindakan ini?</p>
+            <div class="confirm-actions">
+                <button id="btnConfirmCancel" class="btn-secondary">Batal</button>
+                <button id="btnConfirmProceed" class="btn-danger">Ya, Lanjutkan</button>
+            </div>
+        </div>
+    </div>
 
     <!-- Command Palette (Ctrl+K) -->
     <div id="cmdPaletteModal" class="modal hidden">
@@ -546,6 +565,6 @@
         </div>
     </div>
 
-    <script src="script.js?v=2.5"></script>
+    <script src="script.js"></script>
 </body>
 </html>
