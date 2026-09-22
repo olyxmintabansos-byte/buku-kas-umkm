@@ -4,6 +4,12 @@
    Complete Production-Ready Code (No Ellipses, All Features Active)
    ==================================================================== */
 
+// ── PREVENT BROWSER SCROLL RESTORATION CREEP ──
+if ('scrollRestoration' in history) {
+    history.scrollRestoration = 'manual';
+}
+window.scrollTo(0, 0);
+
 // ── TOAST NOTIFICATION ENGINE ──
 function showToast(title, message, type = 'success') {
     const container = document.getElementById('toastContainer') || (() => {
@@ -538,11 +544,13 @@ function deleteDebt(id) {
 
 // ── WALLETS VIEW ──
 function renderWallets() {
-    const total = wallets.cash + wallets.bank + wallets.qris;
-    document.getElementById('totalWalletBalance').textContent = formatRupiah(total);
-    document.getElementById('cashBalance').textContent = formatRupiah(wallets.cash);
-    document.getElementById('bankBalance').textContent = formatRupiah(wallets.bank);
-    document.getElementById('qrisBalance').textContent = formatRupiah(wallets.qris);
+    const elCash = document.getElementById('balCash');
+    const elBank = document.getElementById('balBank');
+    const elQris = document.getElementById('balQris');
+    
+    if (elCash) elCash.textContent = formatRupiah(wallets.cash);
+    if (elBank) elBank.textContent = formatRupiah(wallets.bank);
+    if (elQris) elQris.textContent = formatRupiah(wallets.qris);
 }
 
 function transferWallet(e) {
@@ -589,48 +597,45 @@ function renderBillsTax() {
     const monthIncome = transactions.filter(t => t.date.startsWith(thisMonth) && t.type === 'income').reduce((s, t) => s + (t.netAmount || t.amount), 0);
     const taxDue = monthIncome * (settings.taxPercentage / 100);
     
-    document.getElementById('monthlyIncome').textContent = formatRupiah(monthIncome);
-    document.getElementById('taxPercentage').textContent = settings.taxPercentage;
-    document.getElementById('taxDue').textContent = formatRupiah(taxDue);
+    const elOmzet = document.getElementById('taxOmzet');
+    const elPayable = document.getElementById('taxPayable');
+    if (elOmzet) elOmzet.textContent = formatRupiah(monthIncome);
+    if (elPayable) elPayable.textContent = formatRupiah(taxDue);
     
-    const recurringList = document.getElementById('recurringList');
-    recurringList.innerHTML = recurring.map(r => {
-        const daysUntil = Math.ceil((new Date(r.nextDueDate) - new Date()) / (1000 * 60 * 60 * 24));
-        return `
-            <li style="display: flex; justify-content: space-between;">
-                <span>${r.name} (${r.period})</span>
-                <span>${daysUntil > 0 ? `Dalam ${daysUntil} hari` : '⚠️ Overdue'}</span>
-            </li>
-        `;
-    }).join('');
+    const billList = document.getElementById('billList');
+    if (billList) {
+        billList.innerHTML = recurring.map(r => {
+            const daysUntil = Math.ceil((new Date(r.nextDueDate) - new Date()) / (1000 * 60 * 60 * 24));
+            return `<li style="display: flex; justify-content: space-between;"><span>${r.name} (${r.period})</span><span style="color: ${daysUntil < 3 ? 'var(--danger)' : 'inherit'}">${daysUntil > 0 ? `${daysUntil} hari` : '⚠️ Overdue'}</span></li>`;
+        }).join('');
+    }
 }
 
-function addRecurring(e) {
+function addBill(e) {
     e.preventDefault();
-    const name = document.getElementById('recurringName').value.trim();
-    const amount = parseFloat(document.getElementById('recurringAmount').value);
-    const period = document.getElementById('recurringPeriod').value;
-    const nextDueDate = document.getElementById('recurringNextDue').value;
-    const category = document.getElementById('recurringCategory').value;
+    const name = document.getElementById('billName').value.trim();
+    const amount = parseFloat(document.getElementById('billAmount').value);
+    const period = document.getElementById('billPeriod').value;
+    const nextDate = document.getElementById('billNextDate').value;
     
-    if (!name || !amount || !nextDueDate) {
+    if (!name || !amount || !nextDate) {
         showToast('Perhatian', 'Harap isi semua field', 'danger');
         return;
     }
     
     recurring.push({
-        id: 'rec_' + Date.now(),
+        id: 'bill_' + Date.now(),
         name: name,
         amount: amount,
         period: period,
-        nextDueDate: nextDueDate,
-        category: category
+        nextDueDate: nextDate,
+        category: 'Tagihan'
     });
     
     saveState();
-    document.getElementById('recurringForm').reset();
+    document.getElementById('billForm').reset();
     renderBillsTax();
-    showToast('Berhasil', 'Tagihan rutin berhasil ditambahkan', 'success');
+    showToast('Berhasil', 'Tagihan rutin ditambahkan', 'success');
 }
 
 function payTax() {
@@ -639,7 +644,7 @@ function payTax() {
     const taxDue = monthIncome * (settings.taxPercentage / 100);
     
     if (wallets.bank < taxDue) {
-        showToast('Perhatian', 'Saldo rekening bank tidak cukup', 'danger');
+        showToast('Perhatian', 'Saldo bank tidak cukup', 'danger');
         return;
     }
     
@@ -647,7 +652,7 @@ function payTax() {
     transactions.unshift({
         id: 'trx_' + Date.now(),
         date: getTodayDate(),
-        desc: `Pembayaran PPh Final ${settings.taxPercentage}%`,
+        desc: `PPh Final ${settings.taxPercentage}%`,
         amount: taxDue,
         fee: 0,
         netAmount: taxDue,
@@ -660,7 +665,8 @@ function payTax() {
     saveState();
     renderBillsTax();
     renderWallets();
-    showToast('Berhasil', `Pajak Rp ${formatRupiah(taxDue)} berhasil dibayar`, 'success');
+    renderDashboard();
+    showToast('Berhasil', `Pajak ${formatRupiah(taxDue)} berhasil dibayar`, 'success');
 }
 
 // ── GOALS VIEW ──
@@ -889,6 +895,7 @@ document.addEventListener('DOMContentLoaded', () => {
     applyTheme();
     const lastView = localStorage.getItem('sme_active_view') || 'viewDashboard';
     switchView(lastView);
+    window.scrollTo(0, 0);
     
     // Render all views
     renderDashboard();
