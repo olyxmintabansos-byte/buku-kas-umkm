@@ -580,3 +580,27 @@ input:focus, select:focus {
     body { background: #fff; color: #000; }
     .card { border: 1px solid #ccc; box-shadow: none; }
 }
+
+/* ── UTILITIES & HELPER CLASSES ── */
+.text-danger { color: var(--danger) !important; }
+.text-secondary { color: var(--text-secondary); }
+.text-lg { font-size: 1.15rem; }
+.tracking-widest { letter-spacing: 0.15em; }
+.my-2 { margin-top: 8px; margin-bottom: 8px; }
+.mx-auto { margin-left: auto; margin-right: auto; }
+.mt-20 { margin-top: 20px; }
+.form-row { display: flex; gap: 16px; margin-bottom: 16px; }
+.filter-row { display: flex; gap: 12px; margin-bottom: 16px; align-items: center; }
+.form-card, .chart-card, .watchlist-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: var(--card-radius);
+    padding: 24px;
+    box-shadow: var(--shadow-sm);
+}
+.receipt-body {
+    padding: 12px 0;
+    border-top: 1px dashed #333;
+    border-bottom: 1px dashed #333;
+    margin: 12px 0;
+}
