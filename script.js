@@ -254,6 +254,89 @@ function renderDashboard() {
     
     // Render Watchlist
     renderWatchlist();
+    
+    // Smart Narrative Engine
+    renderSmartNarrative(monthTransactions, income, expense, profit, totalBalance);
+}
+
+// ── SMART FINANCIAL NARRATIVE ENGINE ──
+function renderSmartNarrative(monthTrx, monthIncome, monthExpense, netProfit, totalBalance) {
+    const recent5 = transactions.slice(0, 5);
+    
+    // Net flow of last 5
+    const netFlow5 = recent5.reduce((s, t) => s + (t.type === 'income' ? (t.netAmount || t.amount) : -(t.netAmount || t.amount)), 0);
+    
+    // Avg income
+    const incomes5 = recent5.filter(t => t.type === 'income');
+    const avgIncome = incomes5.length > 0 ? incomes5.reduce((s, t) => s + (t.netAmount || t.amount), 0) / incomes5.length : 0;
+    
+    // Top expense category this month
+    const expByCat = {};
+    (monthTrx || []).filter(t => t.type === 'expense').forEach(t => {
+        const cat = t.category || 'Lain-lain';
+        expByCat[cat] = (expByCat[cat] || 0) + (t.netAmount || t.amount);
+    });
+    const topCatEntry = Object.entries(expByCat).sort((a, b) => b[1] - a[1])[0];
+    const topCatName = topCatEntry ? topCatEntry[0] : '-';
+    
+    // Health status
+    let healthBadgeText, healthBadgeClass;
+    if (netProfit < 0) {
+        healthBadgeText = '🔴 Kas Defisit (Negatif)';
+        healthBadgeClass = 'status-danger';
+    } else if (totalBalance < monthExpense * 2) {
+        healthBadgeText = '🟡 Kas Minim (< 2 Bulan)';
+        healthBadgeClass = 'status-warning';
+    } else {
+        healthBadgeText = '🟢 Kas Sehat (Surplus)';
+        healthBadgeClass = 'status-healthy';
+    }
+    
+    // Narrative text
+    let narrative = '';
+    if (transactions.length === 0) {
+        narrative = 'Belum ada aktivitas transaksi tercatat. Mulai catat pemasukan dan pengeluaran untuk mendapatkan wawasan bisnis yang cerdas.';
+    } else {
+        const flowDir = netFlow5 >= 0 ? 'positif' : 'negatif';
+        const flowDesc = netFlow5 >= 0 ? 'surplus kas' : 'defisit kas';
+        narrative = `Dalam 5 transaksi terakhir, bisnis Anda mencatat net flow ${flowDir} sebesar ${formatRupiah(Math.abs(netFlow5))} (${flowDesc}). `;
+        if (monthIncome > 0 && monthExpense > 0) {
+            narrative += `Bulan ini, ${((monthExpense / monthIncome) * 100).toFixed(0)}% dari pemasukan terserap untuk operasional. `;
+        }
+        if (topCatName !== '-') narrative += `Pos pengeluaran terbesar: "${topCatName}". `;
+        if (netProfit < 0) narrative += 'Perhatian: kas mengalami defisit, segera evaluasi pengeluaran.';
+        else if (totalBalance < monthExpense * 2) narrative += 'Cadangan kas masih tipis, perlu perhatian.';
+        else narrative += 'Kondisi keuangan stabil dengan cadangan kas memadai.';
+    }
+    
+    // Advice
+    let advice = '';
+    if (transactions.length === 0) {
+        advice = 'Mulai dengan mencatat transaksi harian. Konsistensi pencatatan adalah fondasi insight bisnis yang akurat.';
+    } else if (netProfit < 0) {
+        advice = 'Prioritaskan pemangkasan biaya non-esensial dan fokus pada aktivitas yang menghasilkan revenue. Tunda investasi besar hingga kas membaik.';
+    } else if (totalBalance < monthExpense * 2) {
+        advice = 'Tingkatkan margin safety dengan menambah buffer kas minimal 3 bulan operasional. Pertimbangkan diversifikasi sumber pemasukan.';
+    } else if (netProfit > monthExpense * 0.3) {
+        advice = 'Posisi kas sangat kuat. Pertimbangkan alokasi surplus untuk ekspansi bisnis, investasi jangka panjang, atau build emergency fund 6-12 bulan.';
+    } else {
+        advice = 'Pertahankan disiplin finansial. Evaluasi ROI setiap kategori pengeluaran dan optimalkan efisiensi operasional untuk meningkatkan margin profit.';
+    }
+    
+    // Update DOM
+    const el = (id) => document.getElementById(id);
+    const badge = el('healthStatusBadge');
+    if (badge) { badge.textContent = healthBadgeText; badge.className = 'health-badge ' + healthBadgeClass; }
+    const lead = el('smartNarrativeLead');
+    if (lead) lead.textContent = narrative;
+    const nf = el('miniNetFlow');
+    if (nf) { nf.textContent = formatRupiah(netFlow5); nf.style.color = netFlow5 >= 0 ? 'var(--success)' : 'var(--danger)'; }
+    const tc = el('miniTopExpenseCategory');
+    if (tc) tc.textContent = topCatName;
+    const ai = el('miniAvgIncome');
+    if (ai) ai.textContent = formatRupiah(avgIncome);
+    const adv = el('adviceText');
+    if (adv) adv.textContent = advice;
 }
 
 function renderCashFlowChart(monthTransactions) {
@@ -886,9 +969,9 @@ document.getElementById('settingsDarkMode')?.addEventListener('change', (e) => {
 });
 
 document.getElementById('trxDate').valueAsDate = new Date();
-document.getElementById('searchKeyword')?.addEventListener('input', renderTransactions);
+document.getElementById('filterKeyword')?.addEventListener('input', renderTransactions);
 document.getElementById('filterPeriod')?.addEventListener('change', renderTransactions);
-document.getElementById('filterCategory')?.addEventListener('change', renderTransactions);
+document.getElementById('filterCat')?.addEventListener('change', renderTransactions);
 
 // ── INITIALIZATION ──
 document.addEventListener('DOMContentLoaded', () => {

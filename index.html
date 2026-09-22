@@ -7,7 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=2.6">
+    <link rel="stylesheet" href="style.css?v=2.7">
 </head>
 <body>
     <div id="dashboardApp">
@@ -95,6 +95,46 @@
                         <div class="banner-item">
                             <h4>🏛️ Cadangan PPh Final 0.5%</h4>
                             <p id="taxReserve">Rp 0 (Bulan ini)</p>
+                        </div>
+                    </div>
+
+                    <!-- EXECUTIVE SMART NARRATIVE CARD -->
+                    <div id="smartSummaryCard" class="card smart-summary-card">
+                        <div class="smart-summary-header">
+                            <div class="smart-summary-title-group">
+                                <span class="smart-ai-badge">✨ Analisis Cerdas FinOS</span>
+                                <h3>Executive Cash Flow Briefing</h3>
+                            </div>
+                            <span id="healthStatusBadge" class="health-badge status-healthy">🟢 Kas Sehat (Surplus)</span>
+                        </div>
+                        
+                        <div id="smartSummaryBody" class="smart-summary-body">
+                            <p id="smartNarrativeLead" class="narrative-lead">
+                                Memuat analisis transaksi terkini...
+                            </p>
+                            
+                            <div class="smart-metrics-row">
+                                <div class="smart-mini-stat">
+                                    <span class="stat-label">Net Flow (5 Trx Terakhir)</span>
+                                    <strong id="miniNetFlow">Rp 0</strong>
+                                </div>
+                                <div class="smart-mini-stat">
+                                    <span class="stat-label">Pos Pengeluaran Terbesar</span>
+                                    <strong id="miniTopExpenseCategory">-</strong>
+                                </div>
+                                <div class="smart-mini-stat">
+                                    <span class="stat-label">Rata-rata Nominal Masuk</span>
+                                    <strong id="miniAvgIncome">Rp 0</strong>
+                                </div>
+                            </div>
+
+                            <div id="smartActionAdvice" class="smart-action-box">
+                                <span class="advice-icon">💡</span>
+                                <div class="advice-content">
+                                    <strong>Rekomendasi Bisnis:</strong>
+                                    <p id="adviceText">Analisis berjalan...</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -565,6 +605,6 @@
         </div>
     </div>
 
-    <script src="script.js?v=2.6"></script>
+    <script src="script.js?v=2.7"></script>
 </body>
 </html>
