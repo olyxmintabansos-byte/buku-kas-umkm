@@ -3,70 +3,234 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SME Bookkeeping - Buku Kas UMKM</title>
+    <title>SME Bookkeeping Pro - Pembukuan UMKM Digital</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=Roboto:wght@400;500;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="app">
-        <header class="app-header">
-            <div class="logo">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="3"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
-                <h1>SME Bookkeeping</h1>
+    <div id="appContainer">
+        <header id="topNavbar">
+            <div class="navbar-brand">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="2" y="4" width="20" height="16" rx="3"/>
+                    <line x1="2" y1="10" x2="22" y2="10"/>
+                </svg>
+                <div class="brand-text">
+                    <h1 id="brandNameDisplay">Buku Kas Pro UMKM</h1>
+                    <p id="brandTaglineDisplay">Sistem Pembukuan & Arus Kas Digital</p>
+                </div>
             </div>
-            <span class="app-tag">Buku Kas UMKM</span>
+            <div class="navbar-actions">
+                <span id="userRoleBadge" class="badge">Role: Owner</span>
+                <button id="openCustomizerBtn" class="btn btn-outline">🎨 Kustomisasi Tampilan</button>
+                <button id="toggleAuthBtn" class="btn btn-outline">🔒 Ganti Role / Kunci</button>
+                <button id="exportCsvBtn" class="btn btn-outline">📥 Export CSV</button>
+                <button id="printReportBtn" class="btn btn-outline">🖨️ Cetak Rekap</button>
+            </div>
         </header>
 
-        <div id="balance-card">
-            <div class="balance-meta">Total Saldo Kas</div>
-            <h2 id="totalBalance">Rp 0</h2>
-            <div class="balance-breakdown">
-                <div class="stat-pill stat-income">
-                    <span class="stat-pill-label">Pemasukan</span>
-                    <span id="totalIncome" class="stat-pill-val">Rp 0</span>
-                </div>
-                <div class="stat-pill stat-expense">
-                    <span class="stat-pill-label">Pengeluaran</span>
-                    <span id="totalExpense" class="stat-pill-val">Rp 0</span>
+        <section id="metricCardsGrid">
+            <div class="metric-card">
+                <div class="metric-label">Total Saldo Kas</div>
+                <h3 id="statTotalBalance">Rp 0</h3>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">Total Pemasukan</div>
+                <h3 id="statTotalIncome" class="text-income">Rp 0</h3>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">Total Pengeluaran</div>
+                <h3 id="statTotalExpense" class="text-expense">Rp 0</h3>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">Laba Bersih (Net Profit)</div>
+                <h3 id="statNetProfit">Rp 0</h3>
+            </div>
+        </section>
+
+        <section id="analyticsAndActionsSection">
+            <div class="card chart-card">
+                <h3 class="card-heading">Arus Kas Bulanan (Pemasukan vs Pengeluaran)</h3>
+                <div class="canvas-container">
+                    <canvas id="financeChart" width="400" height="180"></canvas>
                 </div>
             </div>
-        </div>
-
-        <form id="transaction-form" onsubmit="event.preventDefault();" class="form-container">
-            <div class="input-field">
-                <label for="descInput">Deskripsi Transaksi</label>
-                <input type="text" id="descInput" placeholder="Contoh: Penjualan Produk A">
-            </div>
-
-            <div class="form-grid">
-                <div class="input-field">
-                    <label for="amountInput">Nominal (Rp)</label>
-                    <input type="number" id="amountInput" placeholder="0" min="1">
+            <div class="card presets-card">
+                <h3 class="card-heading">⚡ Transaksi Cepat (1-Klik Isi)</h3>
+                <div class="preset-grid">
+                    <button type="button" class="preset-btn" data-type="income" data-desc="Penjualan Harian" data-cat="Penjualan">+ Penjualan Harian</button>
+                    <button type="button" class="preset-btn" data-type="expense" data-desc="Beli Stok / Bahan" data-cat="Bahan Baku">- Beli Stok / Bahan</button>
+                    <button type="button" class="preset-btn" data-type="expense" data-desc="Biaya Listrik/Air/Internet" data-cat="Sewa & Listrik">- Biaya Listrik/Air/Internet</button>
+                    <button type="button" class="preset-btn" data-type="expense" data-desc="Makan / Operasional" data-cat="Operasional">- Makan / Operasional</button>
                 </div>
-                <div class="input-field">
-                    <label for="typeInput">Jenis</label>
-                    <select id="typeInput">
-                        <option value="income">🟢 Pemasukan</option>
-                        <option value="expense">🔴 Pengeluaran</option>
+            </div>
+        </section>
+
+        <section id="transactionFormSection" class="card">
+            <h3 class="card-heading">📝 Catat Transaksi Baru</h3>
+            <form id="entryForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="inputDate">Tanggal</label>
+                        <input type="date" id="inputDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputType">Jenis Transaksi</label>
+                        <select id="inputType" required>
+                            <option value="income">🟢 Pemasukan</option>
+                            <option value="expense">🔴 Pengeluaran</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputDesc">Deskripsi</label>
+                    <input type="text" id="inputDesc" placeholder="Contoh: Penjualan 10 Box Dimsum" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="inputAmount">Nominal (Rp)</label>
+                        <input type="number" id="inputAmount" placeholder="0" min="1" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputCategory">Kategori</label>
+                        <select id="inputCategory" required>
+                            <option value="Penjualan">Penjualan</option>
+                            <option value="Bahan Baku">Bahan Baku</option>
+                            <option value="Operasional">Operasional</option>
+                            <option value="Gaji">Gaji</option>
+                            <option value="Sewa & Listrik">Sewa & Listrik</option>
+                            <option value="Lainnya">Lainnya</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputNotes">Catatan Tambahan (Opsional)</label>
+                    <input type="text" id="inputNotes" placeholder="Catatan invoice/suplier">
+                </div>
+                <button type="submit" id="btnSubmitTrx" class="btn btn-primary btn-block">Simpan Transaksi</button>
+            </form>
+        </section>
+
+        <section id="historySection" class="card">
+            <div class="history-header">
+                <h3 class="card-heading">📋 Riwayat Mutasi Kas</h3>
+                <div class="filter-controls">
+                    <input type="text" id="searchKeyword" placeholder="Cari nama transaksi...">
+                    <select id="filterPeriod">
+                        <option value="Semua">Semua Periode</option>
+                        <option value="Hari Ini">Hari Ini</option>
+                        <option value="7 Hari Terakhir">7 Hari Terakhir</option>
+                        <option value="Bulan Ini">Bulan Ini</option>
+                    </select>
+                    <select id="filterCategory">
+                        <option value="Semua">Semua Kategori</option>
+                        <option value="Penjualan">Penjualan</option>
+                        <option value="Bahan Baku">Bahan Baku</option>
+                        <option value="Operasional">Operasional</option>
+                        <option value="Gaji">Gaji</option>
+                        <option value="Sewa & Listrik">Sewa & Listrik</option>
+                        <option value="Lainnya">Lainnya</option>
                     </select>
                 </div>
             </div>
-
-            <button id="addButton" type="button">
-                <span>+</span> Tambah Transaksi
-            </button>
-        </form>
-
-        <section class="history-card">
-            <div class="history-title-row">
-                <h3>Riwayat Transaksi</h3>
-                <span id="trxCount" class="history-counter">0 data</span>
+            <div class="table-responsive">
+                <table id="transactionTable">
+                    <thead>
+                        <tr>
+                            <th>Tanggal</th>
+                            <th>Deskripsi</th>
+                            <th>Kategori</th>
+                            <th>Catatan</th>
+                            <th>Jenis</th>
+                            <th>Nominal</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="transactionTableBody"></tbody>
+                </table>
+                <div id="emptyState" class="empty-state" style="display: none;">
+                    <p>Belum ada riwayat transaksi yang cocok.</p>
+                </div>
             </div>
-            <ul id="transactionList"></ul>
         </section>
     </div>
+
+    <div id="customizerDrawer" class="drawer hidden">
+        <div class="drawer-header">
+            <h3>🎨 Live Customizer Desain & Brand</h3>
+            <button type="button" id="closeCustomizerBtn" class="close-btn">&times;</button>
+        </div>
+        <div class="drawer-content">
+            <div class="control-group">
+                <label for="customBrandInput">Nama Bisnis</label>
+                <input type="text" id="customBrandInput">
+            </div>
+            <div class="control-group">
+                <label for="customTaglineInput">Slogan / Tagline</label>
+                <input type="text" id="customTaglineInput">
+            </div>
+            <div class="control-group">
+                <label for="customPrimaryColor">Warna Utama Brand</label>
+                <div class="color-picker-row">
+                    <input type="color" id="customPrimaryColor" value="#2563eb">
+                    <div class="quick-palettes">
+                        <button type="button" class="palette-btn" style="background:#2563eb" data-color="#2563eb"></button>
+                        <button type="button" class="palette-btn" style="background:#10b981" data-color="#10b981"></button>
+                        <button type="button" class="palette-btn" style="background:#8b5cf6" data-color="#8b5cf6"></button>
+                        <button type="button" class="palette-btn" style="background:#f59e0b" data-color="#f59e0b"></button>
+                    </div>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="checkbox-label">
+                    <input type="checkbox" id="customDarkModeToggle">
+                    Mode Tampilan Gelap (Dark Mode)
+                </label>
+            </div>
+            <div class="control-group">
+                <label for="customRadiusSlider">Kelengkungan Sudut Kartu: <span id="radiusValDisplay">12px</span></label>
+                <input type="range" id="customRadiusSlider" min="0" max="24" value="12">
+            </div>
+            <div class="control-group">
+                <label for="customFontSelect">Pilihan Font</label>
+                <select id="customFontSelect">
+                    <option value="'Plus Jakarta Sans', sans-serif">Plus Jakarta Sans</option>
+                    <option value="'Inter', sans-serif">Inter</option>
+                    <option value="'Roboto', sans-serif">Roboto</option>
+                    <option value="'Playfair Display', serif">Playfair Serif</option>
+                </select>
+            </div>
+            <div class="control-group backup-group">
+                <label>Backup & Restore Database</label>
+                <div class="backup-actions">
+                    <button type="button" id="downloadBackupBtn" class="btn btn-secondary">💾 Download Backup JSON</button>
+                    <input type="file" id="uploadBackupInput" style="display:none" accept=".json">
+                    <button type="button" id="triggerRestoreBtn" class="btn btn-secondary">📂 Restore JSON</button>
+                </div>
+            </div>
+            <div class="drawer-actions">
+                <button type="button" id="saveCustomizerBtn" class="btn btn-primary btn-block">Terapkan & Simpan</button>
+                <button type="button" id="resetCustomizerBtn" class="btn btn-danger btn-block">Reset Standar</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="authModal" class="modal hidden">
+        <div class="modal-card">
+            <h3>🔒 Verifikasi Akses</h3>
+            <p>Masukkan PIN untuk mengubah role akses (Default: 1234)</p>
+            <input type="password" id="pinInput" maxlength="6" placeholder="Masukkan PIN">
+            <div class="modal-actions">
+                <button type="button" id="confirmPinBtn" class="btn btn-primary">Konfirmasi Masuk</button>
+                <button type="button" id="closeAuthModalBtn" class="btn btn-secondary">Tutup</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="drawerOverlay" class="drawer-overlay hidden"></div>
+
     <script src="script.js"></script>
 </body>
 </html>
