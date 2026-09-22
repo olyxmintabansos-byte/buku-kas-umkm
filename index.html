@@ -3,233 +3,548 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SME Bookkeeping Pro - Pembukuan UMKM Digital</title>
+    <title>SME Bookkeeping Pro - Financial OS</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=Roboto:wght@400;500;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="appContainer">
-        <header id="topNavbar">
-            <div class="navbar-brand">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                    <rect x="2" y="4" width="20" height="16" rx="3"/>
-                    <line x1="2" y1="10" x2="22" y2="10"/>
+    <div id="dashboardApp">
+        <!-- LEFT SIDEBAR -->
+        <aside id="sidebar">
+            <div class="sidebar-header">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
                 </svg>
-                <div class="brand-text">
-                    <h1 id="brandNameDisplay">Buku Kas Pro UMKM</h1>
-                    <p id="brandTaglineDisplay">Sistem Pembukuan & Arus Kas Digital</p>
+                <div class="sidebar-brand-text">
+                    <h2 id="sidebarBrandName">FinOS UMKM</h2>
+                    <span id="sidebarBrandTagline">Sistem Finansial Digital</span>
                 </div>
             </div>
-            <div class="navbar-actions">
-                <span id="userRoleBadge" class="badge">Role: Owner</span>
-                <button id="openCustomizerBtn" class="btn btn-outline">🎨 Kustomisasi Tampilan</button>
-                <button id="toggleAuthBtn" class="btn btn-outline">🔒 Ganti Role / Kunci</button>
-                <button id="exportCsvBtn" class="btn btn-outline">📥 Export CSV</button>
-                <button id="printReportBtn" class="btn btn-outline">🖨️ Cetak Rekap</button>
+            
+            <div class="sidebar-cmd-hint">
+                <button id="cmdPaletteTriggerBtn" class="cmd-badge">
+                    <span>⌘K / Ctrl+K</span> Cari Cepat
+                </button>
             </div>
-        </header>
 
-        <section id="metricCardsGrid">
-            <div class="metric-card">
-                <div class="metric-label">Total Saldo Kas</div>
-                <h3 id="statTotalBalance">Rp 0</h3>
-            </div>
-            <div class="metric-card">
-                <div class="metric-label">Total Pemasukan</div>
-                <h3 id="statTotalIncome" class="text-income">Rp 0</h3>
-            </div>
-            <div class="metric-card">
-                <div class="metric-label">Total Pengeluaran</div>
-                <h3 id="statTotalExpense" class="text-expense">Rp 0</h3>
-            </div>
-            <div class="metric-card">
-                <div class="metric-label">Laba Bersih (Net Profit)</div>
-                <h3 id="statNetProfit">Rp 0</h3>
-            </div>
-        </section>
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-item active" data-target="viewDashboard">📊 Dashboard & Metrik</a>
+                <a href="#" class="nav-item" data-target="viewTransactions">📝 Buku Kas & Mutasi</a>
+                <a href="#" class="nav-item" data-target="viewDebts">👥 Buku Hutang Piutang</a>
+                <a href="#" class="nav-item" data-target="viewWallets">👛 Dompet & Multi-Kas</a>
+                <a href="#" class="nav-item" data-target="viewBillsTax">📅 Tagihan & Pajak</a>
+                <a href="#" class="nav-item" data-target="viewGoals">🎯 Target Tabungan</a>
+                <a href="#" class="nav-item" data-target="viewReports">📑 Laporan Finansial</a>
+                <a href="#" class="nav-item" data-target="viewSettings">🎨 Kustomisasi Sistem</a>
+            </nav>
 
-        <section id="analyticsAndActionsSection">
-            <div class="card chart-card">
-                <h3 class="card-heading">Arus Kas Bulanan (Pemasukan vs Pengeluaran)</h3>
-                <div class="canvas-container">
-                    <canvas id="financeChart" width="400" height="180"></canvas>
-                </div>
+            <div class="sidebar-footer">
+                <span id="userRoleBadge" class="badge-role">Role: Owner</span>
+                <button id="toggleAuthBtn" class="btn-icon-text">🔒 Kunci / Ganti Role</button>
             </div>
-            <div class="card presets-card">
-                <h3 class="card-heading">⚡ Transaksi Cepat (1-Klik Isi)</h3>
-                <div class="preset-grid">
-                    <button type="button" class="preset-btn" data-type="income" data-desc="Penjualan Harian" data-cat="Penjualan">+ Penjualan Harian</button>
-                    <button type="button" class="preset-btn" data-type="expense" data-desc="Beli Stok / Bahan" data-cat="Bahan Baku">- Beli Stok / Bahan</button>
-                    <button type="button" class="preset-btn" data-type="expense" data-desc="Biaya Listrik/Air/Internet" data-cat="Sewa & Listrik">- Biaya Listrik/Air/Internet</button>
-                    <button type="button" class="preset-btn" data-type="expense" data-desc="Makan / Operasional" data-cat="Operasional">- Makan / Operasional</button>
-                </div>
-            </div>
-        </section>
+        </aside>
 
-        <section id="transactionFormSection" class="card">
-            <h3 class="card-heading">📝 Catat Transaksi Baru</h3>
-            <form id="entryForm">
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="inputDate">Tanggal</label>
-                        <input type="date" id="inputDate" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="inputType">Jenis Transaksi</label>
-                        <select id="inputType" required>
-                            <option value="income">🟢 Pemasukan</option>
-                            <option value="expense">🔴 Pengeluaran</option>
-                        </select>
-                    </div>
+        <!-- MAIN CONTENT -->
+        <main id="mainContent">
+            <!-- Top Mobile Header -->
+            <header class="top-header">
+                <div class="header-left">
+                    <button id="mobileMenuBtn">☰</button>
+                    <h2 id="pageTitle">Dashboard</h2>
                 </div>
-                <div class="form-group">
-                    <label for="inputDesc">Deskripsi</label>
-                    <input type="text" id="inputDesc" placeholder="Contoh: Penjualan 10 Box Dimsum" required>
+                <div class="header-right">
+                    <button id="quickTrxBtn" class="btn-primary">+ Catat Transaksi</button>
+                    <button id="darkModeToggleBtn" class="btn-icon">🌓</button>
+                    <button id="printBtn" class="btn-icon">🖨️</button>
                 </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="inputAmount">Nominal (Rp)</label>
-                        <input type="number" id="inputAmount" placeholder="0" min="1" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="inputCategory">Kategori</label>
-                        <select id="inputCategory" required>
-                            <option value="Penjualan">Penjualan</option>
-                            <option value="Bahan Baku">Bahan Baku</option>
-                            <option value="Operasional">Operasional</option>
-                            <option value="Gaji">Gaji</option>
-                            <option value="Sewa & Listrik">Sewa & Listrik</option>
-                            <option value="Lainnya">Lainnya</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="inputNotes">Catatan Tambahan (Opsional)</label>
-                    <input type="text" id="inputNotes" placeholder="Catatan invoice/suplier">
-                </div>
-                <button type="submit" id="btnSubmitTrx" class="btn btn-primary btn-block">Simpan Transaksi</button>
-            </form>
-        </section>
+            </header>
 
-        <section id="historySection" class="card">
-            <div class="history-header">
-                <h3 class="card-heading">📋 Riwayat Mutasi Kas</h3>
-                <div class="filter-controls">
-                    <input type="text" id="searchKeyword" placeholder="Cari nama transaksi...">
-                    <select id="filterPeriod">
-                        <option value="Semua">Semua Periode</option>
-                        <option value="Hari Ini">Hari Ini</option>
-                        <option value="7 Hari Terakhir">7 Hari Terakhir</option>
-                        <option value="Bulan Ini">Bulan Ini</option>
-                    </select>
-                    <select id="filterCategory">
-                        <option value="Semua">Semua Kategori</option>
-                        <option value="Penjualan">Penjualan</option>
-                        <option value="Bahan Baku">Bahan Baku</option>
-                        <option value="Operasional">Operasional</option>
-                        <option value="Gaji">Gaji</option>
-                        <option value="Sewa & Listrik">Sewa & Listrik</option>
-                        <option value="Lainnya">Lainnya</option>
-                    </select>
-                </div>
+            <div class="view-container">
+                
+                <!-- VIEW 1: DASHBOARD -->
+                <section id="viewDashboard" class="view-section active">
+                    <div class="bento-grid">
+                        <div class="metric-card">
+                            <span class="metric-label">Total Saldo Gabungan</span>
+                            <h3 id="dashTotalBalance">Rp 0</h3>
+                            <div class="pill-breakdown" id="dashWalletBreakdown">
+                                <span>Laci: 0</span> | <span>Bank: 0</span> | <span>QRIS: 0</span>
+                            </div>
+                        </div>
+                        <div class="metric-card">
+                            <span class="metric-label">Pemasukan Bulan Ini</span>
+                            <h3 id="dashTotalIncome" class="text-income">Rp 0</h3>
+                        </div>
+                        <div class="metric-card">
+                            <span class="metric-label">Pengeluaran Bulan Ini</span>
+                            <h3 id="dashTotalExpense" class="text-expense">Rp 0</h3>
+                        </div>
+                        <div class="metric-card">
+                            <span class="metric-label">Laba Bersih (Net Profit)</span>
+                            <h3 id="dashNetProfit">Rp 0</h3>
+                        </div>
+                    </div>
+
+                    <div class="strategic-banner">
+                        <div class="banner-item">
+                            <h4>⏳ Estimasi Runway Kas</h4>
+                            <p id="runwayEstimate">Menghitung...</p>
+                        </div>
+                        <div class="banner-item">
+                            <h4>🏛️ Cadangan PPh Final 0.5%</h4>
+                            <p id="taxReserve">Rp 0 (Bulan ini)</p>
+                        </div>
+                    </div>
+
+                    <div class="analytics-row">
+                        <div class="card chart-card">
+                            <h3>Arus Kas Bulanan (Pemasukan vs Pengeluaran)</h3>
+                            <canvas id="financeChart" height="220"></canvas>
+                        </div>
+                        <div class="card watchlist-card">
+                            <h3>Mini Watchlist</h3>
+                            <div id="miniWatchlistContent">
+                                <!-- Auto populated -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card mt-4">
+                        <div class="flex-between">
+                            <h3>5 Transaksi Terakhir</h3>
+                            <button id="goToTrxBtn" class="btn-text">Buka Buku Lengkap &rarr;</button>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead><tr><th>Tanggal</th><th>Deskripsi</th><th>Nominal</th></tr></thead>
+                                <tbody id="recentTrxBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- VIEW 2: TRANSACTIONS -->
+                <section id="viewTransactions" class="view-section hidden">
+                    <div class="card form-card">
+                        <h3>📝 Catat Mutasi Kas</h3>
+                        <div class="preset-buttons">
+                            <button class="preset-btn" data-preset="jual">+ Penjualan Harian</button>
+                            <button class="preset-btn" data-preset="stok">- Beli Stok/Bahan</button>
+                            <button class="preset-btn" data-preset="listrik">- Listrik/WiFi</button>
+                            <button class="preset-btn" data-preset="makan">- Makan/Operasional</button>
+                        </div>
+                        <form id="trxForm" class="mt-3">
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label>Tanggal</label>
+                                    <input type="date" id="trxDate" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Jenis</label>
+                                    <select id="trxType">
+                                        <option value="income">🟢 Pemasukan</option>
+                                        <option value="expense">🔴 Pengeluaran</option>
+                                    </select>
+                                </div>
+                                <div class="form-group full-col">
+                                    <label>Deskripsi Transaksi</label>
+                                    <input type="text" id="trxDesc" placeholder="Contoh: Penjualan Produk" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Kategori</label>
+                                    <select id="trxCategory">
+                                        <option value="Penjualan">Penjualan</option>
+                                        <option value="Bahan Baku">Bahan Baku</option>
+                                        <option value="Operasional">Operasional</option>
+                                        <option value="Gaji">Gaji</option>
+                                        <option value="Sewa & Listrik">Sewa & Listrik</option>
+                                        <option value="Lainnya">Lainnya</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Dompet / Sumber Kas</label>
+                                    <select id="trxWallet">
+                                        <option value="cash">💵 Kas Tunai Laci</option>
+                                        <option value="bank">🏦 Rekening Bank</option>
+                                        <option value="qris">📱 QRIS / E-Wallet</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Nominal Kotor (Rp)</label>
+                                    <input type="number" id="trxGrossAmount" min="1" required>
+                                </div>
+                                <div class="form-group flex-center-col">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="trxHasFee">
+                                        Potong Biaya Admin/QRIS?
+                                    </label>
+                                    <input type="number" id="trxFeeAmount" placeholder="Nominal Potongan (Rp)" class="hidden mt-2">
+                                </div>
+                                <div class="form-group full-col">
+                                    <label>No WhatsApp Pelanggan (Opsional, untuk e-Nota)</label>
+                                    <input type="text" id="trxPhone" placeholder="Contoh: 628123456789">
+                                </div>
+                            </div>
+                            <button type="submit" class="btn-primary mt-3 w-100">Simpan Transaksi</button>
+                        </form>
+                    </div>
+
+                    <div class="card mt-4">
+                        <div class="flex-between flex-wrap gap-2">
+                            <h3>📋 Riwayat Mutasi</h3>
+                            <div class="filter-row">
+                                <input type="text" id="filterKeyword" placeholder="Cari...">
+                                <select id="filterPeriod">
+                                    <option value="all">Semua Waktu</option>
+                                    <option value="today">Hari Ini</option>
+                                    <option value="month">Bulan Ini</option>
+                                </select>
+                                <select id="filterCat">
+                                    <option value="all">Semua Kategori</option>
+                                    <option value="Penjualan">Penjualan</option>
+                                    <option value="Bahan Baku">Bahan Baku</option>
+                                    <option value="Operasional">Operasional</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="table-responsive mt-3">
+                            <table class="table">
+                                <thead>
+                                    <tr><th>Tanggal</th><th>Deskripsi & Kategori</th><th>Dompet</th><th>Nominal Bersih</th><th>Aksi</th></tr>
+                                </thead>
+                                <tbody id="trxTableBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- VIEW 3: DEBTS -->
+                <section id="viewDebts" class="view-section hidden">
+                    <div class="debt-summary-banner">
+                        <div class="banner-box box-piutang">
+                            <span>Total Piutang (Uang Masuk)</span>
+                            <h3 id="totalPiutang">Rp 0</h3>
+                        </div>
+                        <div class="banner-box box-hutang">
+                            <span>Total Hutang (Uang Keluar)</span>
+                            <h3 id="totalHutang">Rp 0</h3>
+                        </div>
+                    </div>
+
+                    <div class="card mt-4">
+                        <h3>Catat Hutang / Piutang Baru</h3>
+                        <form id="debtForm" class="form-grid mt-3">
+                            <div class="form-group">
+                                <label>Jenis</label>
+                                <select id="debtType">
+                                    <option value="piutang">Uang Saya di Orang (Piutang)</option>
+                                    <option value="hutang">Saya Pinjam Uang (Hutang)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Nama Pihak / Kontak</label>
+                                <input type="text" id="debtName" required>
+                            </div>
+                            <div class="form-group">
+                                <label>No WhatsApp (awali 62)</label>
+                                <input type="text" id="debtPhone" placeholder="62812...">
+                            </div>
+                            <div class="form-group">
+                                <label>Nominal (Rp)</label>
+                                <input type="number" id="debtAmount" min="1" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Tanggal Jatuh Tempo</label>
+                                <input type="date" id="debtDueDate" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Catatan</label>
+                                <input type="text" id="debtNotes">
+                            </div>
+                            <div class="form-group full-col">
+                                <button type="submit" class="btn-primary w-100">Simpan Catatan</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="card mt-4">
+                        <h3>Daftar Hutang / Piutang Belum Lunas</h3>
+                        <div class="table-responsive mt-3">
+                            <table class="table">
+                                <thead><tr><th>Kontak</th><th>Jenis</th><th>Nominal</th><th>Jatuh Tempo</th><th>Aksi</th></tr></thead>
+                                <tbody id="debtTableBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- VIEW 4: WALLETS -->
+                <section id="viewWallets" class="view-section hidden">
+                    <div class="wallet-grid">
+                        <div class="wallet-card">
+                            <div class="wallet-icon">💵</div>
+                            <div class="wallet-info">
+                                <span>Kas Tunai Laci</span>
+                                <h3 id="balCash">Rp 0</h3>
+                            </div>
+                        </div>
+                        <div class="wallet-card">
+                            <div class="wallet-icon">🏦</div>
+                            <div class="wallet-info">
+                                <span>Rekening Bank</span>
+                                <h3 id="balBank">Rp 0</h3>
+                            </div>
+                        </div>
+                        <div class="wallet-card">
+                            <div class="wallet-icon">📱</div>
+                            <div class="wallet-info">
+                                <span>QRIS / E-Wallet</span>
+                                <h3 id="balQris">Rp 0</h3>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card mt-4">
+                        <h3>Transfer Antar Dompet</h3>
+                        <form id="transferForm" class="form-grid mt-3">
+                            <div class="form-group">
+                                <label>Dari Dompet</label>
+                                <select id="transferFrom">
+                                    <option value="cash">Kas Tunai Laci</option>
+                                    <option value="bank">Rekening Bank</option>
+                                    <option value="qris">QRIS / E-Wallet</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Ke Dompet</label>
+                                <select id="transferTo">
+                                    <option value="bank">Rekening Bank</option>
+                                    <option value="cash">Kas Tunai Laci</option>
+                                    <option value="qris">QRIS / E-Wallet</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Nominal Transfer (Rp)</label>
+                                <input type="number" id="transferAmount" min="1" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Catatan</label>
+                                <input type="text" id="transferNotes" placeholder="Misal: Setor tunai ke bank">
+                            </div>
+                            <div class="form-group full-col">
+                                <button type="submit" class="btn-primary w-100">Proses Pindah Dana</button>
+                            </div>
+                        </form>
+                    </div>
+                </section>
+
+                <!-- VIEW 5: BILLS & TAX -->
+                <section id="viewBillsTax" class="view-section hidden">
+                    <div class="two-col-grid">
+                        <div class="card">
+                            <h3>📅 Tagihan Rutin & Langganan</h3>
+                            <form id="billForm" class="mt-3 form-row">
+                                <input type="text" id="billName" placeholder="Nama Tagihan" class="w-100 mb-2" required>
+                                <input type="number" id="billAmount" placeholder="Nominal" class="w-100 mb-2" required>
+                                <select id="billPeriod" class="w-100 mb-2">
+                                    <option value="bulanan">Bulanan</option>
+                                    <option value="mingguan">Mingguan</option>
+                                </select>
+                                <input type="date" id="billNextDate" class="w-100 mb-2" required>
+                                <button type="submit" class="btn-primary w-100">Tambah Tagihan</button>
+                            </form>
+                            <div class="mt-4">
+                                <h4>Daftar Tagihan Aktif:</h4>
+                                <ul id="billList" class="list-group mt-2"></ul>
+                            </div>
+                        </div>
+                        <div class="card bg-tax-gradient">
+                            <h3 class="text-white">🏛️ Kalkulator PPh Final 0.5%</h3>
+                            <p class="text-white-80 mt-2">Pajak UMKM dihitung dari omzet (Pemasukan Kotor) bulan berjalan.</p>
+                            <div class="tax-box mt-4">
+                                <span>Omzet Bulan Ini</span>
+                                <h2 id="taxOmzet">Rp 0</h2>
+                            </div>
+                            <div class="tax-box mt-3 highlight">
+                                <span>Pajak Terutang (0.5%)</span>
+                                <h2 id="taxPayable">Rp 0</h2>
+                            </div>
+                            <button id="recordTaxBtn" class="btn-secondary w-100 mt-4">Catat Pembayaran Pajak ke Kas</button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- VIEW 6: GOALS -->
+                <section id="viewGoals" class="view-section hidden">
+                    <div class="card">
+                        <h3>🎯 Target Tabungan (Piggy Banks)</h3>
+                        <form id="goalForm" class="form-grid mt-3">
+                            <div class="form-group">
+                                <label>Nama Tujuan Tabungan</label>
+                                <input type="text" id="goalName" required placeholder="Misal: Beli Mesin Kopi">
+                            </div>
+                            <div class="form-group">
+                                <label>Target Nominal (Rp)</label>
+                                <input type="number" id="goalTarget" min="1" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Target Tercapai (Tgl)</label>
+                                <input type="date" id="goalDate" required>
+                            </div>
+                            <div class="form-group flex-end">
+                                <button type="submit" class="btn-primary w-100">Buat Target</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div id="goalsGrid" class="goals-grid mt-4"></div>
+                </section>
+
+                <!-- VIEW 7: REPORTS -->
+                <section id="viewReports" class="view-section hidden">
+                    <div class="card print-area" id="plReportArea">
+                        <div class="text-center mb-4">
+                            <h2 id="reportBrand">Buku Kas Pro</h2>
+                            <p>Laporan Laba Rugi (P&L)</p>
+                        </div>
+                        <table class="report-table">
+                            <tbody>
+                                <tr class="bg-light">
+                                    <td colspan="2"><strong>A. PENDAPATAN</strong></td>
+                                </tr>
+                                <tr>
+                                    <td>Total Pendapatan Kotor (Omzet)</td>
+                                    <td class="text-right" id="repIncome">Rp 0</td>
+                                </tr>
+                                <tr class="bg-light">
+                                    <td colspan="2"><strong>B. PENGELUARAN</strong></td>
+                                </tr>
+                                <tr>
+                                    <td>Total Beban / Pengeluaran</td>
+                                    <td class="text-right text-danger" id="repExpense">Rp 0</td>
+                                </tr>
+                                <tr class="bg-light">
+                                    <td colspan="2"><strong>C. BIAYA ADMIN & PAJAK</strong></td>
+                                </tr>
+                                <tr>
+                                    <td>Total Potongan Admin/QRIS</td>
+                                    <td class="text-right text-danger" id="repFees">Rp 0</td>
+                                </tr>
+                                <tr class="font-bold border-top-thick">
+                                    <td>LABA BERSIH (NET PROFIT)</td>
+                                    <td class="text-right" id="repNet">Rp 0</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="flex-center mt-4 gap-2 no-print">
+                        <button id="btnExportCSV" class="btn-primary">📥 Download CSV Excel</button>
+                        <button id="btnReportPrint" class="btn-secondary">🖨️ Cetak PDF / Kertas</button>
+                    </div>
+                </section>
+
+                <!-- VIEW 8: SETTINGS -->
+                <section id="viewSettings" class="view-section hidden">
+                    <div class="card">
+                        <h3>🎨 Kustomisasi Sistem & Database</h3>
+                        <div class="form-grid mt-4">
+                            <div class="form-group">
+                                <label>Nama Bisnis</label>
+                                <input type="text" id="setBrandName">
+                            </div>
+                            <div class="form-group">
+                                <label>Tagline</label>
+                                <input type="text" id="setTagline">
+                            </div>
+                            <div class="form-group">
+                                <label>Warna Tema Utama</label>
+                                <input type="color" id="setColor" class="w-100">
+                            </div>
+                            <div class="form-group">
+                                <label>Radius Sudut Kartu (px)</label>
+                                <input type="range" id="setRadius" min="0" max="24">
+                            </div>
+                            <div class="form-group">
+                                <label>Mode Tampilan</label>
+                                <label class="checkbox-label"><input type="checkbox" id="setDarkMode"> Aktifkan Dark Mode</label>
+                            </div>
+                            <div class="form-group">
+                                <label>Pajak UMKM (%)</label>
+                                <input type="number" step="0.1" id="setTax" value="0.5">
+                            </div>
+                        </div>
+                        <button id="btnSaveSettings" class="btn-primary mt-4 w-100">Terapkan Pengaturan</button>
+                        <hr class="my-4">
+                        <h4>Manajemen Database</h4>
+                        <div class="flex-wrap gap-2 mt-2">
+                            <button id="btnBackupDb" class="btn-secondary">💾 Export JSON</button>
+                            <input type="file" id="uploadDb" accept=".json" class="hidden">
+                            <button id="btnRestoreDb" class="btn-secondary">📂 Restore JSON</button>
+                            <button id="btnResetDb" class="btn-danger">⚠️ Factory Reset</button>
+                        </div>
+                    </div>
+                </section>
+
             </div>
-            <div class="table-responsive">
-                <table id="transactionTable">
-                    <thead>
-                        <tr>
-                            <th>Tanggal</th>
-                            <th>Deskripsi</th>
-                            <th>Kategori</th>
-                            <th>Catatan</th>
-                            <th>Jenis</th>
-                            <th>Nominal</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody id="transactionTableBody"></tbody>
-                </table>
-                <div id="emptyState" class="empty-state" style="display: none;">
-                    <p>Belum ada riwayat transaksi yang cocok.</p>
-                </div>
-            </div>
-        </section>
+        </main>
     </div>
 
-    <div id="customizerDrawer" class="drawer hidden">
-        <div class="drawer-header">
-            <h3>🎨 Live Customizer Desain & Brand</h3>
-            <button type="button" id="closeCustomizerBtn" class="close-btn">&times;</button>
-        </div>
-        <div class="drawer-content">
-            <div class="control-group">
-                <label for="customBrandInput">Nama Bisnis</label>
-                <input type="text" id="customBrandInput">
+    <!-- GLOBAL MODALS -->
+
+    <!-- Command Palette (Ctrl+K) -->
+    <div id="cmdPaletteModal" class="modal hidden">
+        <div class="cmd-palette-card">
+            <input type="text" id="cmdInput" placeholder="Ketik perintah (contoh: 'pemasukan', 'laporan', 'dark mode')...">
+            <div class="cmd-results" id="cmdResults">
+                <div class="cmd-item" data-action="goto-dashboard">Buka Dashboard</div>
+                <div class="cmd-item" data-action="goto-transactions">Buka Buku Kas (Mutasi)</div>
+                <div class="cmd-item" data-action="goto-debts">Buka Hutang & Piutang</div>
+                <div class="cmd-item" data-action="toggle-theme">Toggle Dark/Light Mode</div>
             </div>
-            <div class="control-group">
-                <label for="customTaglineInput">Slogan / Tagline</label>
-                <input type="text" id="customTaglineInput">
-            </div>
-            <div class="control-group">
-                <label for="customPrimaryColor">Warna Utama Brand</label>
-                <div class="color-picker-row">
-                    <input type="color" id="customPrimaryColor" value="#2563eb">
-                    <div class="quick-palettes">
-                        <button type="button" class="palette-btn" style="background:#2563eb" data-color="#2563eb"></button>
-                        <button type="button" class="palette-btn" style="background:#10b981" data-color="#10b981"></button>
-                        <button type="button" class="palette-btn" style="background:#8b5cf6" data-color="#8b5cf6"></button>
-                        <button type="button" class="palette-btn" style="background:#f59e0b" data-color="#f59e0b"></button>
-                    </div>
-                </div>
-            </div>
-            <div class="control-group">
-                <label class="checkbox-label">
-                    <input type="checkbox" id="customDarkModeToggle">
-                    Mode Tampilan Gelap (Dark Mode)
-                </label>
-            </div>
-            <div class="control-group">
-                <label for="customRadiusSlider">Kelengkungan Sudut Kartu: <span id="radiusValDisplay">12px</span></label>
-                <input type="range" id="customRadiusSlider" min="0" max="24" value="12">
-            </div>
-            <div class="control-group">
-                <label for="customFontSelect">Pilihan Font</label>
-                <select id="customFontSelect">
-                    <option value="'Plus Jakarta Sans', sans-serif">Plus Jakarta Sans</option>
-                    <option value="'Inter', sans-serif">Inter</option>
-                    <option value="'Roboto', sans-serif">Roboto</option>
-                    <option value="'Playfair Display', serif">Playfair Serif</option>
-                </select>
-            </div>
-            <div class="control-group backup-group">
-                <label>Backup & Restore Database</label>
-                <div class="backup-actions">
-                    <button type="button" id="downloadBackupBtn" class="btn btn-secondary">💾 Download Backup JSON</button>
-                    <input type="file" id="uploadBackupInput" style="display:none" accept=".json">
-                    <button type="button" id="triggerRestoreBtn" class="btn btn-secondary">📂 Restore JSON</button>
-                </div>
-            </div>
-            <div class="drawer-actions">
-                <button type="button" id="saveCustomizerBtn" class="btn btn-primary btn-block">Terapkan & Simpan</button>
-                <button type="button" id="resetCustomizerBtn" class="btn btn-danger btn-block">Reset Standar</button>
-            </div>
+            <div class="cmd-footer">Gunakan <b>↑</b> <b>↓</b> untuk navigasi, <b>Enter</b> untuk pilih, <b>Esc</b> untuk tutup.</div>
         </div>
     </div>
 
+    <!-- Thermal Receipt Modal -->
+    <div id="receiptModal" class="modal hidden">
+        <div class="receipt-card" id="receiptPaper">
+            <div class="receipt-header">
+                <h3 id="rcptBrand">Nama Toko</h3>
+                <p id="rcptTagline">Tagline</p>
+                <p>========================</p>
+            </div>
+            <div class="receipt-body">
+                <p><strong>Tgl:</strong> <span id="rcptDate"></span></p>
+                <p><strong>ID:</strong> <span id="rcptId"></span></p>
+                <p><strong>Ref:</strong> <span id="rcptDesc"></span></p>
+                <p>------------------------</p>
+                <h2 id="rcptAmount" class="text-center my-2">Rp 0</h2>
+                <p>------------------------</p>
+            </div>
+            <div class="receipt-footer">
+                <p>Terima Kasih!</p>
+            </div>
+        </div>
+        <div class="flex-center gap-2 mt-3 no-print">
+            <button id="btnPrintReceipt" class="btn-primary">🖨️ Cetak</button>
+            <button id="btnShareWA" class="btn-success">💬 Kirim WA</button>
+            <button id="btnCloseReceipt" class="btn-secondary">Tutup</button>
+        </div>
+    </div>
+
+    <!-- Auth PIN Modal -->
     <div id="authModal" class="modal hidden">
-        <div class="modal-card">
-            <h3>🔒 Verifikasi Akses</h3>
-            <p>Masukkan PIN untuk mengubah role akses (Default: 1234)</p>
-            <input type="password" id="pinInput" maxlength="6" placeholder="Masukkan PIN">
-            <div class="modal-actions">
-                <button type="button" id="confirmPinBtn" class="btn btn-primary">Konfirmasi Masuk</button>
-                <button type="button" id="closeAuthModalBtn" class="btn btn-secondary">Tutup</button>
+        <div class="card text-center max-w-sm mx-auto mt-20">
+            <h3>🔒 Otorisasi Akses</h3>
+            <p class="text-secondary mt-2 mb-4">Masukkan PIN Owner (Default: 1234)</p>
+            <input type="password" id="pinInput" maxlength="6" class="text-center text-lg tracking-widest mb-4">
+            <div class="flex-center gap-2">
+                <button id="btnSubmitPin" class="btn-primary">Buka Kunci</button>
+                <button id="btnCancelPin" class="btn-secondary">Batal</button>
             </div>
         </div>
     </div>
-
-    <div id="drawerOverlay" class="drawer-overlay hidden"></div>
 
     <script src="script.js"></script>
 </body>
