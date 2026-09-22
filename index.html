@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SME Bookkeeping - Buku Kas UMKM</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app">
+        <header class="app-header">
+            <div class="logo">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="3"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+                <h1>SME Bookkeeping</h1>
+            </div>
+            <span class="app-tag">Buku Kas UMKM</span>
+        </header>
+
+        <div id="balance-card">
+            <div class="balance-meta">Total Saldo Kas</div>
+            <h2 id="totalBalance">Rp 0</h2>
+            <div class="balance-breakdown">
+                <div class="stat-pill stat-income">
+                    <span class="stat-pill-label">Pemasukan</span>
+                    <span id="totalIncome" class="stat-pill-val">Rp 0</span>
+                </div>
+                <div class="stat-pill stat-expense">
+                    <span class="stat-pill-label">Pengeluaran</span>
+                    <span id="totalExpense" class="stat-pill-val">Rp 0</span>
+                </div>
+            </div>
+        </div>
+
+        <form id="transaction-form" onsubmit="event.preventDefault();" class="form-container">
+            <div class="input-field">
+                <label for="descInput">Deskripsi Transaksi</label>
+                <input type="text" id="descInput" placeholder="Contoh: Penjualan Produk A">
+            </div>
+
+            <div class="form-grid">
+                <div class="input-field">
+                    <label for="amountInput">Nominal (Rp)</label>
+                    <input type="number" id="amountInput" placeholder="0" min="1">
+                </div>
+                <div class="input-field">
+                    <label for="typeInput">Jenis</label>
+                    <select id="typeInput">
+                        <option value="income">🟢 Pemasukan</option>
+                        <option value="expense">🔴 Pengeluaran</option>
+                    </select>
+                </div>
+            </div>
+
+            <button id="addButton" type="button">
+                <span>+</span> Tambah Transaksi
+            </button>
+        </form>
+
+        <section class="history-card">
+            <div class="history-title-row">
+                <h3>Riwayat Transaksi</h3>
+                <span id="trxCount" class="history-counter">0 data</span>
+            </div>
+            <ul id="transactionList"></ul>
+        </section>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
