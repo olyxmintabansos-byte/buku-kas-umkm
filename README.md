@@ -2,6 +2,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![GitHub Pages](https://img.shields.io/badge/Demo-Live%20Website-success?logo=github)](https://olyxmintabansos-byte.github.io/buku-kas-umkm/)
+[![Author](https://img.shields.io/badge/Author-Olyx-10B981?style=flat-square&logo=github&logoColor=white)](https://github.com/olyxmintabansos-byte)
 [![Stack: Vanilla JS](https://img.shields.io/badge/Tech-HTML5%20%7C%20CSS3%20%7C%20Vanilla%20ES6+-orange.svg)](https://olyxmintabansos-byte.github.io/buku-kas-umkm/)
 [![Standard: Anti--AI--Slop](https://img.shields.io/badge/Craftsmanship-Anti--AI--Slop-purple.svg)](https://olyxmintabansos-byte.github.io/buku-kas-umkm/)
 
@@ -67,6 +68,15 @@ Aplikasi ini mengusung filosofi **Local-First**. Seluruh data transaksi, catatan
 
 ---
 
-## 📄 Lisensi
+## 📄 Lisensi & Atribusi Hak Cipta
 
-Proyek ini dilisensikan di bawah [Lisensi MIT](LICENSE). Bebas digunakan, dimodifikasi, dan didistribusikan untuk mendukung kemajuan UMKM Indonesia.
+<p align="center">
+  <img src="https://img.shields.io/badge/Made%20with%20%E2%9D%A4%EF%B8%8F%20by-Olyx-10B981?style=for-the-badge&logo=github" alt="Made by Olyx" />
+  <img src="https://img.shields.io/badge/%C2%A9%202026-Olyx-blue?style=for-the-badge" alt="Copyright 2026 Olyx" />
+</p>
+
+<p align="center">
+  Crafted with passion & precision by <strong><a href="https://github.com/olyxmintabansos-byte">Olyx</a></strong><br>
+  <strong>© 2026 by Olyx (@olyxmintabansos-byte)</strong>. All rights reserved.<br>
+  Proyek ini dilisensikan di bawah <a href="https://opensource.org/licenses/MIT">Lisensi MIT</a>. Bebas digunakan, dimodifikasi, dan didistribusikan untuk memajukan UMKM Indonesia.
+</p>
